@@ -40,7 +40,7 @@ const BS_DATA = {
     'alienHead','alienTorso','alienPelvis','alienUpperArm','alienForeArm','alienHand','alienUpperLeg','alienLowerLeg','alienToes',
     'assassinHead','assassinTorso','assassinPelvis','assassinUpperArm','assassinForeArm','assassinHand','assassinUpperLeg','assassinLowerLeg','assassinToes',
     'bearHead','bearTorso','bearPelvis','bearUpperArm','bearForeArm','bearHand','bearUpperLeg','bearLowerLeg','bearToes',
-    'bonesHead','bonesTorso','bonesPelvis','bonesUpperArm','bonesForeArm','bonesHand','bonesUpperLeg','bonesLowerLeg','bonesToes',
+    'bonesHead','bonesTorso','bonesPelvis','bonesUpperArm','bonesForeArm','bonesHand','bonesUpperLeg','bonesLowerLeg','bonesToes', 'bomb',
     'bunnyHead','bunnyTorso','bunnyPelvis','bunnyUpperArm','bunnyForeArm','bunnyHand','bunnyUpperLeg','bunnyLowerLeg','bunnyToes',
     'cowboyHead','cowboyTorso','cowboyPelvis','cowboyUpperArm','cowboyForeArm','cowboyHand','cowboyUpperLeg','cowboyLowerLeg','cowboyToes',
     'cyborgHead','cyborgTorso','cyborgPelvis','cyborgUpperArm','cyborgForeArm','cyborgHand','cyborgUpperLeg','cyborgLowerLeg','cyborgToes',
