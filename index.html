@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BombSquad Character Maker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <span class="logo-bomb">💣</span>
+      <span class="logo-text">Character <em>Maker</em></span>
+    </div>
+    <div class="step-trail" id="stepTrail"></div>
+  </header>
+
+  <!-- WIZARD CONTAINER -->
+  <main id="app">
+
+    <!-- STEP 0 — IDENTITY -->
+    <section class="step active" id="step-0">
+      <h2 class="step-title"><span class="step-num">01</span>Character Identity</h2>
+      <div class="form-grid">
+
+        <div class="field">
+          <label>Name <span class="hint">Display name shown in-game</span></label>
+          <input type="text" id="charName" placeholder="e.g. Shadow Viper" autocomplete="off" />
+        </div>
+
+        <div class="field">
+          <label>CharName <span class="hint">Internal code-name (no spaces)</span></label>
+          <input type="text" id="charCodeName" placeholder="e.g. ninja (like Snake Shadow)" autocomplete="off" />
+        </div>
+
+        <div class="field">
+          <label>Icon Texture <span class="hint">The icon shown in lobby</span></label>
+          <div class="select-pill" id="iconTextureBtn" data-target="iconTexture">
+            <span class="pill-val" id="iconTextureVal">Select</span>
+            <span class="pill-arrow">▾</span>
+          </div>
+          <input type="hidden" id="iconTexture" />
+        </div>
+
+        <div class="field">
+          <label>Icon Color Mask <span class="hint">Mask for tinting the icon</span></label>
+          <div class="select-pill" id="iconMaskBtn" data-target="iconMask">
+            <span class="pill-val" id="iconMaskVal">Select</span>
+            <span class="pill-arrow">▾</span>
+          </div>
+          <input type="hidden" id="iconMask" />
+        </div>
+
+        <div class="field full">
+          <label>Style <span class="hint">Animation / pose style — pick the closest character</span></label>
+          <div class="style-grid" id="styleGrid"></div>
+        </div>
+
+      </div>
+      <div class="step-nav">
+        <button class="btn-next" onclick="goNext(0)">Next →</button>
+      </div>
+    </section>
+
+    <!-- STEP 1 — HEAD -->
+    <section class="step" id="step-1">
+      <h2 class="step-title"><span class="step-num">02</span>Head</h2>
+      <div class="toggle-row">
+        <label class="toggle-label">Head</label>
+        <label class="switch">
+          <input type="checkbox" id="headEnabled" checked onchange="toggleSection('head', this.checked)" />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="part-fields" id="head-fields">
+        <div class="form-grid">
+          <div class="field">
+            <label>Mesh</label>
+            <div class="select-pill" data-target="headMesh">
+              <span class="pill-val" id="headMeshVal">Select</span>
+              <span class="pill-arrow">▾</span>
+            </div>
+            <input type="hidden" id="headMesh" />
+          </div>
+          <div class="field">
+            <label>Texture</label>
+            <div class="select-pill" data-target="headTex">
+              <span class="pill-val" id="headTexVal">Select</span>
+              <span class="pill-arrow">▾</span>
+            </div>
+            <input type="hidden" id="headTex" />
+          </div>
+          <div class="field">
+            <label>Color Mask <span class="hint">optional</span></label>
+            <div class="select-pill" data-target="headMask">
+              <span class="pill-val" id="headMaskVal">Select</span>
+              <span class="pill-arrow">▾</span>
+            </div>
+            <input type="hidden" id="headMask" />
+          </div>
+          <div class="field">
+            <label>Scale <span class="hint">1.0 = default</span></label>
+            <input type="number" id="headScale" value="1.0" step="0.05" min="0.1" max="3.0" />
+          </div>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-back" onclick="goPrev(1)">← Back</button>
+        <button class="btn-next" onclick="goNext(1)">Next →</button>
+      </div>
+    </section>
+
+    <!-- STEP 2 — BODY -->
+    <section class="step" id="step-2">
+      <h2 class="step-title"><span class="step-num">03</span>Body (Torso + Pelvis)</h2>
+      <div class="toggle-row">
+        <label class="toggle-label">Body</label>
+        <label class="switch">
+          <input type="checkbox" id="bodyEnabled" checked onchange="toggleSection('body', this.checked)" />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="part-fields" id="body-fields">
+        <div class="form-grid">
+          <div class="field">
+            <label>Torso Mesh</label>
+            <div class="select-pill" data-target="torsoMesh">
+              <span class="pill-val" id="torsoMeshVal">Select</span>
+              <span class="pill-arrow">▾</span>
+            </div>
+            <input type="hidden" id="torsoMesh" />
+          </div>
+          <div class="field">
+            <label>Torso Texture</label>
+            <div class="select-pill" data-target="torsoTex">
+              <span class="pill-val" id="torsoTexVal">Select</span>
+              <span class="pill-arrow">▾</span>
+            </div>
+            <input type="hidden" id="torsoTex" />
+          </div>
+          <div class="field">
+            <label>Pelvis Mesh</label>
+            <div class="select-pill" data-target="pelvisMesh">
+              <span class="pill-val" id="pelvisMeshVal">Select</span>
+              <span class="pill-arrow">▾</span>
+            </div>
+            <input type="hidden" id="pelvisMesh" />
+          </div>
+          <div class="field">
+            <label>Color Mask <span class="hint">optional</span></label>
+            <div class="select-pill" data-target="bodyMask">
+              <span class="pill-val" id="bodyMaskVal">Select</span>
+              <span class="pill-arrow">▾</span>
+            </div>
+            <input type="hidden" id="bodyMask" />
+          </div>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-back" onclick="goPrev(2)">← Back</button>
+        <button class="btn-next" onclick="goNext(2)">Next →</button>
+      </div>
+    </section>
+
+    <!-- STEP 3 — ARMS -->
+    <section class="step" id="step-3">
+      <h2 class="step-title"><span class="step-num">04</span>Arms &amp; Hands</h2>
+
+      <!-- Upper Arms -->
+      <p class="sub-label">Upper Arms</p>
+      <div class="form-grid">
+        <div class="field">
+          <label>Upper Arm Mesh</label>
+          <div class="select-pill" data-target="upperArmMesh">
+            <span class="pill-val" id="upperArmMeshVal">Select</span>
+            <span class="pill-arrow">▾</span>
+          </div>
+          <input type="hidden" id="upperArmMesh" />
+        </div>
+        <div class="field">
+          <label>Forearm Mesh</label>
+          <div class="select-pill" data-target="forearmMesh">
+            <span class="pill-val" id="forearmMeshVal">Select</span>
+            <span class="pill-arrow">▾</span>
+          </div>
+          <input type="hidden" id="forearmMesh" />
+        </div>
+      </div>
+
+      <div class="two-col-hands">
+        <!-- Left Hand -->
+        <div class="hand-col">
+          <div class="toggle-row">
+            <label class="toggle-label">Left Hand</label>
+            <label class="switch">
+              <input type="checkbox" id="leftHandEnabled" checked onchange="toggleSection('leftHand', this.checked)" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="part-fields" id="leftHand-fields">
+            <div class="field">
+              <label>Mesh</label>
+              <div class="select-pill" data-target="leftHandMesh">
+                <span class="pill-val" id="leftHandMeshVal">Select</span>
+                <span class="pill-arrow">▾</span>
+              </div>
+              <input type="hidden" id="leftHandMesh" />
+            </div>
+            <div class="field">
+              <label>Texture</label>
+              <div class="select-pill" data-target="leftHandTex">
+                <span class="pill-val" id="leftHandTexVal">Select</span>
+                <span class="pill-arrow">▾</span>
+              </div>
+              <input type="hidden" id="leftHandTex" />
+            </div>
+            <div class="field">
+              <label>Color Mask</label>
+              <div class="select-pill" data-target="leftHandMask">
+                <span class="pill-val" id="leftHandMaskVal">Select</span>
+                <span class="pill-arrow">▾</span>
+              </div>
+              <input type="hidden" id="leftHandMask" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Hand -->
+        <div class="hand-col">
+          <div class="toggle-row">
+            <label class="toggle-label">Right Hand</label>
+            <label class="switch">
+              <input type="checkbox" id="rightHandEnabled" checked onchange="toggleSection('rightHand', this.checked)" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="part-fields" id="rightHand-fields">
+            <div class="field">
+              <label>Mesh</label>
+              <div class="select-pill" data-target="rightHandMesh">
+                <span class="pill-val" id="rightHandMeshVal">Select</span>
+                <span class="pill-arrow">▾</span>
+              </div>
+              <input type="hidden" id="rightHandMesh" />
+            </div>
+            <div class="field">
+              <label>Texture</label>
+              <div class="select-pill" data-target="rightHandTex">
+                <span class="pill-val" id="rightHandTexVal">Select</span>
+                <span class="pill-arrow">▾</span>
+              </div>
+              <input type="hidden" id="rightHandTex" />
+            </div>
+            <div class="field">
+              <label>Color Mask</label>
+              <div class="select-pill" data-target="rightHandMask">
+                <span class="pill-val" id="rightHandMaskVal">Select</span>
+                <span class="pill-arrow">▾</span>
+              </div>
+              <input type="hidden" id="rightHandMask" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-back" onclick="goPrev(3)">← Back</button>
+        <button class="btn-next" onclick="goNext(3)">Next →</button>
+      </div>
+    </section>
+
+    <!-- STEP 4 — LEGS -->
+    <section class="step" id="step-4">
+      <h2 class="step-title"><span class="step-num">05</span>Legs &amp; Feet</h2>
+
+      <div class="two-col-hands">
+        <!-- Left Leg -->
+        <div class="hand-col">
+          <div class="toggle-row">
+            <label class="toggle-label">Left Leg</label>
+            <label class="switch">
+              <input type="checkbox" id="leftLegEnabled" checked onchange="toggleSection('leftLeg', this.checked)" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="part-fields" id="leftLeg-fields">
+            <div class="field">
+              <label>Upper Leg Mesh</label>
+              <div class="select-pill" data-target="upperLegMesh">
+                <span class="pill-val" id="upperLegMeshVal">Select</span>
+                <span class="pill-arrow">▾</span>
+              </div>
+              <input type="hidden" id="upperLegMesh" />
+            </div>
+            <div class="field">
+              <label>Lower Leg Mesh</label>
+              <div class="select-pill" data-target="lowerLegMesh">
+                <span class="pill-val" id="lowerLegMeshVal">Select</span>
+                <span class="pill-arrow">▾</span>
+              </div>
+              <input type="hidden" id="lowerLegMesh" />
+            </div>
+            <div class="field">
+              <label>Toes Mesh</label>
+              <div class="select-pill" data-target="toesMesh">
+                <span class="pill-val" id="toesMeshVal">Select</span>
+                <span class="pill-arrow">▾</span>
+              </div>
+              <input type="hidden" id="toesMesh" />
+            </div>
+            <div class="field">
+              <label>Leg Texture</label>
+              <div class="select-pill" data-target="legTex">
+                <span class="pill-val" id="legTexVal">Select</span>
+                <span class="pill-arrow">▾</span>
+              </div>
+              <input type="hidden" id="legTex" />
+            </div>
+            <div class="field">
+              <label>Color Mask</label>
+              <div class="select-pill" data-target="legMask">
+                <span class="pill-val" id="legMaskVal">Select</span>
+                <span class="pill-arrow">▾</span>
+              </div>
+              <input type="hidden" id="legMask" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Leg — mirrors left, uses same meshes -->
+        <div class="hand-col">
+          <div class="toggle-row">
+            <label class="toggle-label">Right Leg</label>
+            <label class="switch">
+              <input type="checkbox" id="rightLegEnabled" checked onchange="toggleSection('rightLeg', this.checked)" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="part-fields" id="rightLeg-fields">
+            <p class="mirror-note">🔁 Right leg mirrors left leg mesh settings.<br/>Customize texture/mask separately if needed.</p>
+            <div class="field">
+              <label>Texture Override</label>
+              <div class="select-pill" data-target="rightLegTex">
+                <span class="pill-val" id="rightLegTexVal">Same as Left</span>
+                <span class="pill-arrow">▾</span>
+              </div>
+              <input type="hidden" id="rightLegTex" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-back" onclick="goPrev(4)">← Back</button>
+        <button class="btn-next" onclick="goNext(4)">Next →</button>
+      </div>
+    </section>
+
+    <!-- STEP 5 — EXTRA -->
+    <section class="step" id="step-5">
+      <h2 class="step-title"><span class="step-num">06</span>Extra Attachment</h2>
+      <div class="toggle-row">
+        <label class="toggle-label">Extra</label>
+        <label class="switch">
+          <input type="checkbox" id="extraEnabled" onchange="toggleSection('extra', this.checked)" />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="part-fields hidden" id="extra-fields">
+        <div class="form-grid">
+          <div class="field">
+            <label>Mesh</label>
+            <div class="select-pill" data-target="extraMesh">
+              <span class="pill-val" id="extraMeshVal">Select</span>
+              <span class="pill-arrow">▾</span>
+            </div>
+            <input type="hidden" id="extraMesh" />
+          </div>
+          <div class="field">
+            <label>Texture</label>
+            <div class="select-pill" data-target="extraTex">
+              <span class="pill-val" id="extraTexVal">Select</span>
+              <span class="pill-arrow">▾</span>
+            </div>
+            <input type="hidden" id="extraTex" />
+          </div>
+          <div class="field full">
+            <label>Position</label>
+            <div class="position-grid" id="positionGrid">
+              <button class="pos-btn" data-pos="right_shoulder" onclick="selectPos(this)">Right Shoulder</button>
+              <button class="pos-btn" data-pos="left_shoulder"  onclick="selectPos(this)">Left Shoulder</button>
+              <button class="pos-btn" data-pos="back"           onclick="selectPos(this)">Back</button>
+              <button class="pos-btn" data-pos="front"          onclick="selectPos(this)">Front</button>
+              <button class="pos-btn" data-pos="head_top"       onclick="selectPos(this)">Above Head</button>
+            </div>
+            <input type="hidden" id="extraPos" />
+          </div>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-back" onclick="goPrev(5)">← Back</button>
+        <button class="btn-next" onclick="goNext(5)">Next →</button>
+      </div>
+    </section>
+
+    <!-- STEP 6 — SOUNDS -->
+    <section class="step" id="step-6">
+      <h2 class="step-title"><span class="step-num">07</span>Sounds</h2>
+
+      <div class="sounds-block">
+        <label class="sounds-category">Jump Sounds <span class="hint">up to 4</span></label>
+        <div class="sounds-row" id="jumpSounds">
+          <div class="select-pill snd-pill" data-target="jumpSnd0"><span class="pill-val" id="jumpSnd0Val">Select</span><span class="pill-arrow">▾</span></div>
+          <div class="select-pill snd-pill" data-target="jumpSnd1"><span class="pill-val" id="jumpSnd1Val">Select</span><span class="pill-arrow">▾</span></div>
+          <div class="select-pill snd-pill" data-target="jumpSnd2"><span class="pill-val" id="jumpSnd2Val">Select</span><span class="pill-arrow">▾</span></div>
+          <div class="select-pill snd-pill" data-target="jumpSnd3"><span class="pill-val" id="jumpSnd3Val">Select</span><span class="pill-arrow">▾</span></div>
+          <input type="hidden" id="jumpSnd0"/><input type="hidden" id="jumpSnd1"/>
+          <input type="hidden" id="jumpSnd2"/><input type="hidden" id="jumpSnd3"/>
+        </div>
+
+        <label class="sounds-category">Attack Sounds <span class="hint">up to 4</span></label>
+        <div class="sounds-row" id="attackSounds">
+          <div class="select-pill snd-pill" data-target="attackSnd0"><span class="pill-val" id="attackSnd0Val">Select</span><span class="pill-arrow">▾</span></div>
+          <div class="select-pill snd-pill" data-target="attackSnd1"><span class="pill-val" id="attackSnd1Val">Select</span><span class="pill-arrow">▾</span></div>
+          <div class="select-pill snd-pill" data-target="attackSnd2"><span class="pill-val" id="attackSnd2Val">Select</span><span class="pill-arrow">▾</span></div>
+          <div class="select-pill snd-pill" data-target="attackSnd3"><span class="pill-val" id="attackSnd3Val">Select</span><span class="pill-arrow">▾</span></div>
+          <input type="hidden" id="attackSnd0"/><input type="hidden" id="attackSnd1"/>
+          <input type="hidden" id="attackSnd2"/><input type="hidden" id="attackSnd3"/>
+        </div>
+
+        <label class="sounds-category">Hit / Impact Sounds <span class="hint">up to 4</span></label>
+        <div class="sounds-row">
+          <div class="select-pill snd-pill" data-target="hitSnd0"><span class="pill-val" id="hitSnd0Val">Select</span><span class="pill-arrow">▾</span></div>
+          <div class="select-pill snd-pill" data-target="hitSnd1"><span class="pill-val" id="hitSnd1Val">Select</span><span class="pill-arrow">▾</span></div>
+          <div class="select-pill snd-pill" data-target="hitSnd2"><span class="pill-val" id="hitSnd2Val">Select</span><span class="pill-arrow">▾</span></div>
+          <div class="select-pill snd-pill" data-target="hitSnd3"><span class="pill-val" id="hitSnd3Val">Select</span><span class="pill-arrow">▾</span></div>
+          <input type="hidden" id="hitSnd0"/><input type="hidden" id="hitSnd1"/>
+          <input type="hidden" id="hitSnd2"/><input type="hidden" id="hitSnd3"/>
+        </div>
+
+        <label class="sounds-category">Pickup Sounds <span class="hint">up to 2</span></label>
+        <div class="sounds-row">
+          <div class="select-pill snd-pill" data-target="pickupSnd0"><span class="pill-val" id="pickupSnd0Val">Select</span><span class="pill-arrow">▾</span></div>
+          <div class="select-pill snd-pill" data-target="pickupSnd1"><span class="pill-val" id="pickupSnd1Val">Select</span><span class="pill-arrow">▾</span></div>
+          <input type="hidden" id="pickupSnd0"/><input type="hidden" id="pickupSnd1"/>
+        </div>
+
+        <label class="sounds-category">Fall Sound</label>
+        <div class="sounds-row">
+          <div class="select-pill snd-pill" data-target="fallSnd0"><span class="pill-val" id="fallSnd0Val">Select</span><span class="pill-arrow">▾</span></div>
+          <input type="hidden" id="fallSnd0"/>
+        </div>
+
+        <label class="sounds-category">Death Sound</label>
+        <div class="sounds-row">
+          <div class="select-pill snd-pill" data-target="deathSnd0"><span class="pill-val" id="deathSnd0Val">Select</span><span class="pill-arrow">▾</span></div>
+          <div class="select-pill snd-pill" data-target="deathSnd1"><span class="pill-val" id="deathSnd1Val">Select</span><span class="pill-arrow">▾</span></div>
+          <input type="hidden" id="deathSnd0"/><input type="hidden" id="deathSnd1"/>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-back" onclick="goPrev(6)">← Back</button>
+        <button class="btn-extract" onclick="startExtract()">⬇ Extract .py</button>
+      </div>
+    </section>
+
+    <!-- EXTRACT SCREEN -->
+    <section class="step" id="step-extract">
+      <div class="extract-center">
+        <div class="extract-bomb">💣</div>
+        <h2 class="extract-title">Building your character…</h2>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <p class="extract-sub" id="extractSub">Compiling meshes…</p>
+        <button class="btn-download hidden" id="downloadBtn" onclick="downloadFile()">⬇ Download character.py</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL PICKER -->
+  <div class="modal-overlay hidden" id="modalOverlay" onclick="closeModal(event)">
+    <div class="modal" id="modal">
+      <div class="modal-header">
+        <span id="modalTitle">Select</span>
+        <input class="modal-search" type="text" id="modalSearch" placeholder="Search…" oninput="filterModal(this.value)" />
+        <button class="modal-clear" onclick="clearSelection()">✕ Clear</button>
+      </div>
+      <div class="modal-grid" id="modalGrid"></div>
+    </div>
+  </div>
+
+  <script src="gamedata.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
