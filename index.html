@@ -8,6 +8,15 @@
 </head>
 <body>
 
+  <!-- ASSET LOADER OVERLAY -->
+  <div id="assetLoader" style="display:flex;position:fixed;inset:0;background:#0d0f14;z-index:999;
+       flex-direction:column;align-items:center;justify-content:center;gap:16px;">
+    <div style="font-size:56px;animation:bombpulse 1s ease-in-out infinite">💣</div>
+    <p style="font-family:'Rajdhani',sans-serif;font-size:20px;color:#f7930f;font-weight:700">
+      Loading assets…</p>
+    <p style="font-size:13px;color:#7b88aa">Scanning Textures/ and Sounds/ folders</p>
+  </div>
+
   <!-- HEADER -->
   <header>
     <div class="logo">
@@ -17,10 +26,9 @@
     <div class="step-trail" id="stepTrail"></div>
   </header>
 
-  <!-- WIZARD CONTAINER -->
   <main id="app">
 
-    <!-- STEP 0 — IDENTITY -->
+    <!-- ── STEP 0 — IDENTITY ───────────────────────── -->
     <section class="step active" id="step-0">
       <h2 class="step-title"><span class="step-num">01</span>Character Identity</h2>
       <div class="form-grid">
@@ -32,12 +40,12 @@
 
         <div class="field">
           <label>CharName <span class="hint">Internal code-name (no spaces)</span></label>
-          <input type="text" id="charCodeName" placeholder="e.g. ninja (like Snake Shadow)" autocomplete="off" />
+          <input type="text" id="charCodeName" placeholder="e.g. ninja" autocomplete="off" />
         </div>
 
         <div class="field">
-          <label>Icon Texture <span class="hint">The icon shown in lobby</span></label>
-          <div class="select-pill" id="iconTextureBtn" data-target="iconTexture">
+          <label>Icon Texture <span class="hint">Icon shown in lobby</span></label>
+          <div class="select-pill" data-target="iconTexture">
             <span class="pill-val" id="iconTextureVal">Select</span>
             <span class="pill-arrow">▾</span>
           </div>
@@ -45,16 +53,39 @@
         </div>
 
         <div class="field">
-          <label>Icon Color Mask <span class="hint">Mask for tinting the icon</span></label>
-          <div class="select-pill" id="iconMaskBtn" data-target="iconMask">
+          <label>Icon Color Mask</label>
+          <div class="select-pill" data-target="iconMask">
             <span class="pill-val" id="iconMaskVal">Select</span>
             <span class="pill-arrow">▾</span>
           </div>
           <input type="hidden" id="iconMask" />
         </div>
 
+        <!-- COLOR TEXTURE & MASK — global, applied to entire body -->
+        <div class="field">
+          <label>Color Texture
+            <span class="hint">Applied to the whole body</span>
+          </label>
+          <div class="select-pill" data-target="colorTex">
+            <span class="pill-val" id="colorTexVal">Select</span>
+            <span class="pill-arrow">▾</span>
+          </div>
+          <input type="hidden" id="colorTex" />
+        </div>
+
+        <div class="field">
+          <label>Color Mask
+            <span class="hint">Whole-body tint mask</span>
+          </label>
+          <div class="select-pill" data-target="colorMask">
+            <span class="pill-val" id="colorMaskVal">Select</span>
+            <span class="pill-arrow">▾</span>
+          </div>
+          <input type="hidden" id="colorMask" />
+        </div>
+
         <div class="field full">
-          <label>Style <span class="hint">Animation / pose style — pick the closest character</span></label>
+          <label>Style <span class="hint">Animation / pose style</span></label>
           <div class="style-grid" id="styleGrid"></div>
         </div>
 
@@ -64,7 +95,7 @@
       </div>
     </section>
 
-    <!-- STEP 1 — HEAD -->
+    <!-- ── STEP 1 — HEAD ───────────────────────────── -->
     <section class="step" id="step-1">
       <h2 class="step-title"><span class="step-num">02</span>Head</h2>
       <div class="toggle-row">
@@ -79,26 +110,9 @@
           <div class="field">
             <label>Mesh</label>
             <div class="select-pill" data-target="headMesh">
-              <span class="pill-val" id="headMeshVal">Select</span>
-              <span class="pill-arrow">▾</span>
+              <span class="pill-val" id="headMeshVal">Select</span><span class="pill-arrow">▾</span>
             </div>
             <input type="hidden" id="headMesh" />
-          </div>
-          <div class="field">
-            <label>Texture</label>
-            <div class="select-pill" data-target="headTex">
-              <span class="pill-val" id="headTexVal">Select</span>
-              <span class="pill-arrow">▾</span>
-            </div>
-            <input type="hidden" id="headTex" />
-          </div>
-          <div class="field">
-            <label>Color Mask <span class="hint">optional</span></label>
-            <div class="select-pill" data-target="headMask">
-              <span class="pill-val" id="headMaskVal">Select</span>
-              <span class="pill-arrow">▾</span>
-            </div>
-            <input type="hidden" id="headMask" />
           </div>
           <div class="field">
             <label>Scale <span class="hint">1.0 = default</span></label>
@@ -112,9 +126,9 @@
       </div>
     </section>
 
-    <!-- STEP 2 — BODY -->
+    <!-- ── STEP 2 — BODY ───────────────────────────── -->
     <section class="step" id="step-2">
-      <h2 class="step-title"><span class="step-num">03</span>Body (Torso + Pelvis)</h2>
+      <h2 class="step-title"><span class="step-num">03</span>Body</h2>
       <div class="toggle-row">
         <label class="toggle-label">Body</label>
         <label class="switch">
@@ -127,34 +141,16 @@
           <div class="field">
             <label>Torso Mesh</label>
             <div class="select-pill" data-target="torsoMesh">
-              <span class="pill-val" id="torsoMeshVal">Select</span>
-              <span class="pill-arrow">▾</span>
+              <span class="pill-val" id="torsoMeshVal">Select</span><span class="pill-arrow">▾</span>
             </div>
             <input type="hidden" id="torsoMesh" />
           </div>
           <div class="field">
-            <label>Torso Texture</label>
-            <div class="select-pill" data-target="torsoTex">
-              <span class="pill-val" id="torsoTexVal">Select</span>
-              <span class="pill-arrow">▾</span>
-            </div>
-            <input type="hidden" id="torsoTex" />
-          </div>
-          <div class="field">
             <label>Pelvis Mesh</label>
             <div class="select-pill" data-target="pelvisMesh">
-              <span class="pill-val" id="pelvisMeshVal">Select</span>
-              <span class="pill-arrow">▾</span>
+              <span class="pill-val" id="pelvisMeshVal">Select</span><span class="pill-arrow">▾</span>
             </div>
             <input type="hidden" id="pelvisMesh" />
-          </div>
-          <div class="field">
-            <label>Color Mask <span class="hint">optional</span></label>
-            <div class="select-pill" data-target="bodyMask">
-              <span class="pill-val" id="bodyMaskVal">Select</span>
-              <span class="pill-arrow">▾</span>
-            </div>
-            <input type="hidden" id="bodyMask" />
           </div>
         </div>
       </div>
@@ -164,33 +160,28 @@
       </div>
     </section>
 
-    <!-- STEP 3 — ARMS -->
+    <!-- ── STEP 3 — ARMS ───────────────────────────── -->
     <section class="step" id="step-3">
       <h2 class="step-title"><span class="step-num">04</span>Arms &amp; Hands</h2>
-
-      <!-- Upper Arms -->
       <p class="sub-label">Upper Arms</p>
-      <div class="form-grid">
+      <div class="form-grid" style="margin-bottom:20px">
         <div class="field">
           <label>Upper Arm Mesh</label>
           <div class="select-pill" data-target="upperArmMesh">
-            <span class="pill-val" id="upperArmMeshVal">Select</span>
-            <span class="pill-arrow">▾</span>
+            <span class="pill-val" id="upperArmMeshVal">Select</span><span class="pill-arrow">▾</span>
           </div>
           <input type="hidden" id="upperArmMesh" />
         </div>
         <div class="field">
           <label>Forearm Mesh</label>
           <div class="select-pill" data-target="forearmMesh">
-            <span class="pill-val" id="forearmMeshVal">Select</span>
-            <span class="pill-arrow">▾</span>
+            <span class="pill-val" id="forearmMeshVal">Select</span><span class="pill-arrow">▾</span>
           </div>
           <input type="hidden" id="forearmMesh" />
         </div>
       </div>
 
       <div class="two-col-hands">
-        <!-- Left Hand -->
         <div class="hand-col">
           <div class="toggle-row">
             <label class="toggle-label">Left Hand</label>
@@ -203,31 +194,12 @@
             <div class="field">
               <label>Mesh</label>
               <div class="select-pill" data-target="leftHandMesh">
-                <span class="pill-val" id="leftHandMeshVal">Select</span>
-                <span class="pill-arrow">▾</span>
+                <span class="pill-val" id="leftHandMeshVal">Select</span><span class="pill-arrow">▾</span>
               </div>
               <input type="hidden" id="leftHandMesh" />
             </div>
-            <div class="field">
-              <label>Texture</label>
-              <div class="select-pill" data-target="leftHandTex">
-                <span class="pill-val" id="leftHandTexVal">Select</span>
-                <span class="pill-arrow">▾</span>
-              </div>
-              <input type="hidden" id="leftHandTex" />
-            </div>
-            <div class="field">
-              <label>Color Mask</label>
-              <div class="select-pill" data-target="leftHandMask">
-                <span class="pill-val" id="leftHandMaskVal">Select</span>
-                <span class="pill-arrow">▾</span>
-              </div>
-              <input type="hidden" id="leftHandMask" />
-            </div>
           </div>
         </div>
-
-        <!-- Right Hand -->
         <div class="hand-col">
           <div class="toggle-row">
             <label class="toggle-label">Right Hand</label>
@@ -240,26 +212,9 @@
             <div class="field">
               <label>Mesh</label>
               <div class="select-pill" data-target="rightHandMesh">
-                <span class="pill-val" id="rightHandMeshVal">Select</span>
-                <span class="pill-arrow">▾</span>
+                <span class="pill-val" id="rightHandMeshVal">Select</span><span class="pill-arrow">▾</span>
               </div>
               <input type="hidden" id="rightHandMesh" />
-            </div>
-            <div class="field">
-              <label>Texture</label>
-              <div class="select-pill" data-target="rightHandTex">
-                <span class="pill-val" id="rightHandTexVal">Select</span>
-                <span class="pill-arrow">▾</span>
-              </div>
-              <input type="hidden" id="rightHandTex" />
-            </div>
-            <div class="field">
-              <label>Color Mask</label>
-              <div class="select-pill" data-target="rightHandMask">
-                <span class="pill-val" id="rightHandMaskVal">Select</span>
-                <span class="pill-arrow">▾</span>
-              </div>
-              <input type="hidden" id="rightHandMask" />
             </div>
           </div>
         </div>
@@ -271,94 +226,40 @@
       </div>
     </section>
 
-    <!-- STEP 4 — LEGS -->
+    <!-- ── STEP 4 — LEGS ───────────────────────────── -->
     <section class="step" id="step-4">
       <h2 class="step-title"><span class="step-num">05</span>Legs &amp; Feet</h2>
-
-      <div class="two-col-hands">
-        <!-- Left Leg -->
-        <div class="hand-col">
-          <div class="toggle-row">
-            <label class="toggle-label">Left Leg</label>
-            <label class="switch">
-              <input type="checkbox" id="leftLegEnabled" checked onchange="toggleSection('leftLeg', this.checked)" />
-              <span class="slider"></span>
-            </label>
+      <p class="info-note">💡 BombSquad uses the same mesh for both legs — left/right are mirrored automatically.</p>
+      <div class="form-grid">
+        <div class="field">
+          <label>Upper Leg Mesh</label>
+          <div class="select-pill" data-target="upperLegMesh">
+            <span class="pill-val" id="upperLegMeshVal">Select</span><span class="pill-arrow">▾</span>
           </div>
-          <div class="part-fields" id="leftLeg-fields">
-            <div class="field">
-              <label>Upper Leg Mesh</label>
-              <div class="select-pill" data-target="upperLegMesh">
-                <span class="pill-val" id="upperLegMeshVal">Select</span>
-                <span class="pill-arrow">▾</span>
-              </div>
-              <input type="hidden" id="upperLegMesh" />
-            </div>
-            <div class="field">
-              <label>Lower Leg Mesh</label>
-              <div class="select-pill" data-target="lowerLegMesh">
-                <span class="pill-val" id="lowerLegMeshVal">Select</span>
-                <span class="pill-arrow">▾</span>
-              </div>
-              <input type="hidden" id="lowerLegMesh" />
-            </div>
-            <div class="field">
-              <label>Toes Mesh</label>
-              <div class="select-pill" data-target="toesMesh">
-                <span class="pill-val" id="toesMeshVal">Select</span>
-                <span class="pill-arrow">▾</span>
-              </div>
-              <input type="hidden" id="toesMesh" />
-            </div>
-            <div class="field">
-              <label>Leg Texture</label>
-              <div class="select-pill" data-target="legTex">
-                <span class="pill-val" id="legTexVal">Select</span>
-                <span class="pill-arrow">▾</span>
-              </div>
-              <input type="hidden" id="legTex" />
-            </div>
-            <div class="field">
-              <label>Color Mask</label>
-              <div class="select-pill" data-target="legMask">
-                <span class="pill-val" id="legMaskVal">Select</span>
-                <span class="pill-arrow">▾</span>
-              </div>
-              <input type="hidden" id="legMask" />
-            </div>
-          </div>
+          <input type="hidden" id="upperLegMesh" />
         </div>
-
-        <!-- Right Leg — mirrors left, uses same meshes -->
-        <div class="hand-col">
-          <div class="toggle-row">
-            <label class="toggle-label">Right Leg</label>
-            <label class="switch">
-              <input type="checkbox" id="rightLegEnabled" checked onchange="toggleSection('rightLeg', this.checked)" />
-              <span class="slider"></span>
-            </label>
+        <div class="field">
+          <label>Lower Leg Mesh</label>
+          <div class="select-pill" data-target="lowerLegMesh">
+            <span class="pill-val" id="lowerLegMeshVal">Select</span><span class="pill-arrow">▾</span>
           </div>
-          <div class="part-fields" id="rightLeg-fields">
-            <p class="mirror-note">🔁 Right leg mirrors left leg mesh settings.<br/>Customize texture/mask separately if needed.</p>
-            <div class="field">
-              <label>Texture Override</label>
-              <div class="select-pill" data-target="rightLegTex">
-                <span class="pill-val" id="rightLegTexVal">Same as Left</span>
-                <span class="pill-arrow">▾</span>
-              </div>
-              <input type="hidden" id="rightLegTex" />
-            </div>
+          <input type="hidden" id="lowerLegMesh" />
+        </div>
+        <div class="field">
+          <label>Toes Mesh</label>
+          <div class="select-pill" data-target="toesMesh">
+            <span class="pill-val" id="toesMeshVal">Select</span><span class="pill-arrow">▾</span>
           </div>
+          <input type="hidden" id="toesMesh" />
         </div>
       </div>
-
       <div class="step-nav">
         <button class="btn-back" onclick="goPrev(4)">← Back</button>
         <button class="btn-next" onclick="goNext(4)">Next →</button>
       </div>
     </section>
 
-    <!-- STEP 5 — EXTRA -->
+    <!-- ── STEP 5 — EXTRA ──────────────────────────── -->
     <section class="step" id="step-5">
       <h2 class="step-title"><span class="step-num">06</span>Extra Attachment</h2>
       <div class="toggle-row">
@@ -373,22 +274,20 @@
           <div class="field">
             <label>Mesh</label>
             <div class="select-pill" data-target="extraMesh">
-              <span class="pill-val" id="extraMeshVal">Select</span>
-              <span class="pill-arrow">▾</span>
+              <span class="pill-val" id="extraMeshVal">Select</span><span class="pill-arrow">▾</span>
             </div>
             <input type="hidden" id="extraMesh" />
           </div>
           <div class="field">
             <label>Texture</label>
             <div class="select-pill" data-target="extraTex">
-              <span class="pill-val" id="extraTexVal">Select</span>
-              <span class="pill-arrow">▾</span>
+              <span class="pill-val" id="extraTexVal">Select</span><span class="pill-arrow">▾</span>
             </div>
             <input type="hidden" id="extraTex" />
           </div>
           <div class="field full">
-            <label>Position</label>
-            <div class="position-grid" id="positionGrid">
+            <label>Attach Position</label>
+            <div class="position-grid">
               <button class="pos-btn" data-pos="right_shoulder" onclick="selectPos(this)">Right Shoulder</button>
               <button class="pos-btn" data-pos="left_shoulder"  onclick="selectPos(this)">Left Shoulder</button>
               <button class="pos-btn" data-pos="back"           onclick="selectPos(this)">Back</button>
@@ -405,13 +304,13 @@
       </div>
     </section>
 
-    <!-- STEP 6 — SOUNDS -->
+    <!-- ── STEP 6 — SOUNDS ─────────────────────────── -->
     <section class="step" id="step-6">
       <h2 class="step-title"><span class="step-num">07</span>Sounds</h2>
-
       <div class="sounds-block">
+
         <label class="sounds-category">Jump Sounds <span class="hint">up to 4</span></label>
-        <div class="sounds-row" id="jumpSounds">
+        <div class="sounds-row">
           <div class="select-pill snd-pill" data-target="jumpSnd0"><span class="pill-val" id="jumpSnd0Val">Select</span><span class="pill-arrow">▾</span></div>
           <div class="select-pill snd-pill" data-target="jumpSnd1"><span class="pill-val" id="jumpSnd1Val">Select</span><span class="pill-arrow">▾</span></div>
           <div class="select-pill snd-pill" data-target="jumpSnd2"><span class="pill-val" id="jumpSnd2Val">Select</span><span class="pill-arrow">▾</span></div>
@@ -421,7 +320,7 @@
         </div>
 
         <label class="sounds-category">Attack Sounds <span class="hint">up to 4</span></label>
-        <div class="sounds-row" id="attackSounds">
+        <div class="sounds-row">
           <div class="select-pill snd-pill" data-target="attackSnd0"><span class="pill-val" id="attackSnd0Val">Select</span><span class="pill-arrow">▾</span></div>
           <div class="select-pill snd-pill" data-target="attackSnd1"><span class="pill-val" id="attackSnd1Val">Select</span><span class="pill-arrow">▾</span></div>
           <div class="select-pill snd-pill" data-target="attackSnd2"><span class="pill-val" id="attackSnd2Val">Select</span><span class="pill-arrow">▾</span></div>
@@ -430,7 +329,7 @@
           <input type="hidden" id="attackSnd2"/><input type="hidden" id="attackSnd3"/>
         </div>
 
-        <label class="sounds-category">Hit / Impact Sounds <span class="hint">up to 4</span></label>
+        <label class="sounds-category">Hit Sounds <span class="hint">up to 4</span></label>
         <div class="sounds-row">
           <div class="select-pill snd-pill" data-target="hitSnd0"><span class="pill-val" id="hitSnd0Val">Select</span><span class="pill-arrow">▾</span></div>
           <div class="select-pill snd-pill" data-target="hitSnd1"><span class="pill-val" id="hitSnd1Val">Select</span><span class="pill-arrow">▾</span></div>
@@ -467,7 +366,7 @@
       </div>
     </section>
 
-    <!-- EXTRACT SCREEN -->
+    <!-- ── EXTRACT SCREEN ──────────────────────────── -->
     <section class="step" id="step-extract">
       <div class="extract-center">
         <div class="extract-bomb">💣</div>
