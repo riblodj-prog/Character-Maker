@@ -550,3 +550,34 @@ input:checked + .slider::before { transform: translateX(20px); }
   .step-trail { display: none; }
   .modal-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
 }
+
+/* ── Info note ─────────────────────────── */
+.info-note {
+  background: var(--surface2);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  color: var(--muted);
+  font-size: 13px;
+  padding: 10px 14px;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* ── Modal loading / empty states ──────── */
+.modal-loading, .modal-empty {
+  grid-column: 1 / -1;
+  padding: 40px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* ── No-image fallback for mesh items ──── */
+.modal-item.no-img img { display: none; }
+.modal-item.no-img::before {
+  content: '⬡';
+  font-size: 32px;
+  color: var(--border);
+  display: block;
+  margin-bottom: 4px;
+}
