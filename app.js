@@ -432,8 +432,9 @@ function generatePython() {
   const pyList = arr => arr.length === 0 ? '[]'
     : '[\n        ' + arr.map(s => `'${s}'`).join(', ') + '\n    ]';
 
-  // Extra attachment comment
-  let extraBlock = '';
+  // Extra attachment — real Python code inside the Plugin
+  let extraImport = '';
+  let extraBlock  = '';
   const extraEnabled = document.getElementById('extraEnabled')?.checked;
   if (extraEnabled && v('extraMesh')) {
     const posMap = {
@@ -443,25 +444,32 @@ function generatePython() {
       front:          '(0.0, 0.2, 0.3)',
       head_top:       '(0.0, 0.8, 0.0)'
     };
-    const pos = posMap[selectedPos] || '(0.0, 0.5, 0.0)';
-    extraBlock = `
+    const pos     = posMap[selectedPos] || '(0.0, 0.5, 0.0)';
+    const mesh    = v('extraMesh');
+    const tex     = v('extraTex') || 'white';
+    extraImport   = `import bascenev1 as bs`;
+    extraBlock    = `
 
-    # ── Extra Attachment ──────────────────────────────────────────────────────
-    # Add inside your Actor subclass __init__ to attach this mesh:
-    #
-    #   self._extra = bs.newnode('prop', attrs={
-    #       'mesh': bs.getmesh('${v('extraMesh')}'),
-    #       'color_texture': bs.gettexture('${v('extraTex') || 'white'}'),
-    #       'position': ${pos},
-    #       'body': 'empty',
-    #       'shadow_size': 0.0,
-    #       'is_area_of_interest': False,
-    #   })
-    #   self.node.connectattr('position', self._extra, 'position')`;
+    def _attach_extra(spaz_node: bs.Node) -> None:
+        """Attach the extra mesh to the character node."""
+        extra = bs.newnode(
+            'prop',
+            attrs={
+                'mesh': bs.getmesh('${mesh}'),
+                'color_texture': bs.gettexture('${tex}'),
+                'body': 'empty',
+                'shadow_size': 0.0,
+                'is_area_of_interest': False,
+            },
+        )
+        spaz_node.connectattr('position', extra, 'position')
+        return extra`;
   }
 
   const now = new Date().toISOString().split('T')[0];
   const pascal = charName.replace(/(?:^|\s)(\w)/g, (_, c) => c.toUpperCase()).replace(/\s+/g, '');
+
+  const extraImportLine = extraImport ? `\n${extraImport}` : '';
 
   return `# -*- coding: utf-8 -*-
 # ba_meta require api 9
@@ -475,12 +483,12 @@ function generatePython() {
 #   Copy this file into your BombSquad mods folder, then restart.
 #   The character '${charName}' will appear in the character chooser.
 #
-# Tested with Ballistica API 9 (BombSquad 1.7.x+)
+# Tested with Ballistica API 9 (BombSquad 1.7.37+)
 
 from __future__ import annotations
-import babase
+import babase${extraImportLine}
 from bascenev1lib.actor.spazappearance import Appearance
-
+${extraBlock}
 
 def _register() -> None:
     t = Appearance('${charName}')
@@ -514,7 +522,7 @@ def _register() -> None:
 
     # ── Style ─────────────────────────────────────────────────────────────────
     t.style = '${style}'
-    ${extraBlock}
+
 
 # ba_meta export babase.Plugin
 class ${pascal}Plugin(babase.Plugin):
@@ -529,3 +537,4 @@ class ${pascal}Plugin(babase.Plugin):
                 raise
 `;
 }
+   
