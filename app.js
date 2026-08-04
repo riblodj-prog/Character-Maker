@@ -397,26 +397,26 @@ function generatePython() {
   const style     = selectedStyle || 'spaz';
 
   // Icon
-  const iconTex   = v('iconTexture')   || `${codeName}Icon`;
-  const iconMask  = v('iconMask')      || `${codeName}IconColorMask`;
+  const iconTex   = v('iconTexture')   || `empty`;
+  const iconMask  = v('iconMask')      || `empty`;
 
   // Color — ONE pair for the whole character
-  const colorTex  = v('colorTex')   || `${codeName}Color`;
-  const colorMask = v('colorMask')  || `${codeName}ColorMask`;
+  const colorTex  = v('colorTex')   || `empty`;
+  const colorMask = v('colorMask')  || `empty`;
 
   // Meshes
   const headEnabled  = document.getElementById('headEnabled')?.checked;
   const bodyEnabled  = document.getElementById('bodyEnabled')?.checked;
 
-  const headMesh    = headEnabled  ? (v('headMesh')    || `${codeName}Head`)    : '';
-  const torsoMesh   = bodyEnabled  ? (v('torsoMesh')   || `${codeName}Torso`)   : '';
-  const pelvisMesh  = bodyEnabled  ? (v('pelvisMesh')  || `${codeName}Pelvis`)  : '';
-  const upperArm    = v('upperArmMesh')  || `${codeName}UpperArm`;
-  const forearm     = v('forearmMesh')   || `${codeName}ForeArm`;
-  const handMesh    = v('leftHandMesh')  || `${codeName}Hand`;
-  const upperLeg    = v('upperLegMesh')  || `${codeName}UpperLeg`;
-  const lowerLeg    = v('lowerLegMesh')  || `${codeName}LowerLeg`;
-  const toesMesh    = v('toesMesh')      || `${codeName}Toes`;
+  const headMesh    = headEnabled  ? (v('headMesh')    || `buttonNull`)    : '';
+  const torsoMesh   = bodyEnabled  ? (v('torsoMesh')   || `buttonNull`)   : '';
+  const pelvisMesh  = bodyEnabled  ? (v('pelvisMesh')  || `buttonNull`)  : '';
+  const upperArm    = v('upperArmMesh')  || `buttonNull`;
+  const forearm     = v('forearmMesh')   || `buttonNull`;
+  const handMesh    = v('leftHandMesh')  || `buttonNull`;
+  const upperLeg    = v('upperLegMesh')  || `buttonNull`;
+  const lowerLeg    = v('lowerLegMesh')  || `buttonNull`;
+  const toesMesh    = v('toesMesh')      || `buttonNull`;
 
   // Sounds
   const finalJump   = fallback(soundList('jumpSnd0','jumpSnd1','jumpSnd2','jumpSnd3'),
@@ -444,7 +444,7 @@ function generatePython() {
       front:          '(0.0, 0.2, 0.3)',
       head_top:       '(0.0, 0.8, 0.0)'
     };
-    const pos     = posMap[selectedPos] || '(0.0, 0.5, 0.0)';
+    const pos     = posMap[selectedPos] || '(0.0, 6.5, 0.0)';
     const mesh    = v('extraMesh');
     const tex     = v('extraTex') || 'white';
     extraImport   = `import bascenev1 as bs`;
@@ -459,7 +459,7 @@ function generatePython() {
                 'color_texture': bs.gettexture('${tex}'),
                 'body': 'empty',
                 'shadow_size': 0.0,
-                'is_area_of_interest': False,
+                'is_area_of_interest': True,
             },
         )
         spaz_node.connectattr('position', extra, 'position')
@@ -531,7 +531,7 @@ class ${pascal}Plugin(babase.Plugin):
     def on_app_running(self) -> None:
         try:
             _register()
-            print('[CharMaker] ✅ ${charName} registered.')
+            print('✅ ${charName} registered.')
         except RuntimeError as exc:
             if 'already exists' not in str(exc):
                 raise
